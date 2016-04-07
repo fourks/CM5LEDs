@@ -137,19 +137,15 @@ extension AlignmentView {
 
         // Check whether any of the grid points are being dragged
         if location - grid.corners.tl <= 5.0 {
-            Swift.print("Moving top left corner")
             draggedPoint = .TopLeft
         }
         if location - grid.corners.bl <= 5.0 {
-            Swift.print("Moving bottom left corner")
             draggedPoint = .BottomLeft
         }
         if location - grid.corners.tr <= 5.0 {
-            Swift.print("Moving top right corner")
             draggedPoint = .TopRight
         }
         if location - grid.corners.br <= 5.0 {
-            Swift.print("Moving bottom right corner")
             draggedPoint = .BottomRight
         }
     }

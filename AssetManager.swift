@@ -37,7 +37,7 @@ class AssetManager {
             preferredTimescale: 600
         )
         // If we don't do this, it appears that the image generator will only give us
-        // frames once every 1/2 second!?
+        // frames once every 1/2 second!? Perhaps these are the keyframes
         imageGenerator.requestedTimeToleranceAfter  = tolerance
         imageGenerator.requestedTimeToleranceBefore = tolerance
         
@@ -92,8 +92,6 @@ class AssetManager {
                 self.cancelProcessing()
                 return
             }
-            
-//            print("Difference in requested and actual time: \(CMTimeGetSeconds(requested) - CMTimeGetSeconds(actual))")
             
             if let image = imageOptional {
                 block(actual, image)
