@@ -3,7 +3,7 @@
 //  CM5
 //
 //  Created by William Dillon on 4/5/16.
-//  Copyright © 2016 housedillon. All rights reserved.
+//  Copyright © 2016 housedillon. See top level LICENSE file
 //
 
 import Cocoa

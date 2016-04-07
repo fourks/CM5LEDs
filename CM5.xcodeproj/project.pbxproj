@@ -12,7 +12,6 @@
 		3C956FC91CB437670048F801 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C956FC71CB437670048F801 /* MainMenu.xib */; };
 		3C956FD41CB437670048F801 /* CM5Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C956FD31CB437670048F801 /* CM5Tests.swift */; };
 		3C956FDF1CB437670048F801 /* CM5UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C956FDE1CB437670048F801 /* CM5UITests.swift */; };
-		3C956FED1CB437850048F801 /* CM5-small.mov in Resources */ = {isa = PBXBuildFile; fileRef = 3C956FEC1CB437850048F801 /* CM5-small.mov */; };
 		3C956FEF1CB4379E0048F801 /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C956FEE1CB4379E0048F801 /* AssetManager.swift */; };
 		3C956FF01CB4379E0048F801 /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C956FEE1CB4379E0048F801 /* AssetManager.swift */; };
 		3C956FF21CB45B160048F801 /* AlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C956FF11CB45B160048F801 /* AlignmentView.swift */; };
@@ -21,6 +20,7 @@
 		3C956FFC1CB481D50048F801 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C956FFA1CB481D50048F801 /* Grid.swift */; };
 		3C9570011CB4B3A80048F801 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9570001CB4B3A70048F801 /* Sampler.swift */; };
 		3C9570021CB4B3A80048F801 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9570001CB4B3A70048F801 /* Sampler.swift */; };
+		3C95700E1CB5F2020048F801 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3C95700D1CB5F2020048F801 /* LICENSE */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,11 +52,11 @@
 		3C956FDA1CB437670048F801 /* CM5UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CM5UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C956FDE1CB437670048F801 /* CM5UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CM5UITests.swift; sourceTree = "<group>"; };
 		3C956FE01CB437670048F801 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3C956FEC1CB437850048F801 /* CM5-small.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "CM5-small.mov"; sourceTree = "<group>"; };
 		3C956FEE1CB4379E0048F801 /* AssetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetManager.swift; path = ../AssetManager.swift; sourceTree = "<group>"; };
 		3C956FF11CB45B160048F801 /* AlignmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlignmentView.swift; sourceTree = "<group>"; };
 		3C956FFA1CB481D50048F801 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		3C9570001CB4B3A70048F801 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Sampler.swift; path = ../Sampler.swift; sourceTree = "<group>"; };
+		3C95700D1CB5F2020048F801 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +87,7 @@
 		3C956FB71CB437670048F801 = {
 			isa = PBXGroup;
 			children = (
+				3C95700D1CB5F2020048F801 /* LICENSE */,
 				3C956FC21CB437670048F801 /* CM5 */,
 				3C956FD21CB437670048F801 /* CM5Tests */,
 				3C956FDD1CB437670048F801 /* CM5UITests */,
@@ -107,7 +108,6 @@
 		3C956FC21CB437670048F801 /* CM5 */ = {
 			isa = PBXGroup;
 			children = (
-				3C956FEC1CB437850048F801 /* CM5-small.mov */,
 				3C956FC51CB437670048F801 /* Assets.xcassets */,
 				3C956FC71CB437670048F801 /* MainMenu.xib */,
 				3C956FCA1CB437670048F801 /* Info.plist */,
@@ -242,7 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C956FED1CB437850048F801 /* CM5-small.mov in Resources */,
+				3C95700E1CB5F2020048F801 /* LICENSE in Resources */,
 				3C956FC61CB437670048F801 /* Assets.xcassets in Resources */,
 				3C956FC91CB437670048F801 /* MainMenu.xib in Resources */,
 			);
@@ -499,6 +499,7 @@
 				3C956FE51CB437670048F801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3C956FE61CB437670048F801 /* Build configuration list for PBXNativeTarget "CM5Tests" */ = {
 			isa = XCConfigurationList;
@@ -507,6 +508,7 @@
 				3C956FE81CB437670048F801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3C956FE91CB437670048F801 /* Build configuration list for PBXNativeTarget "CM5UITests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +517,7 @@
 				3C956FEB1CB437670048F801 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
