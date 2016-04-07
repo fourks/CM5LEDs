@@ -75,9 +75,9 @@ func collapseSamples(animation: [[UInt16]]) -> [(Int, Int, [UInt16])] {
         if let last = lastFrame {
             let differences = compareFrames(last, rhs: frame)
 
-            // Implement hysteresis.  On the transition to a stable transition,
-            // which is the first fully no-change pair of frames, output a frame
-            // once stable, require a change of > 10 to move back into unstable
+            // Implement hysteresis.  On the transition to a stable state,
+            // which is the first fully no-change pair of frames, output a frame.
+            // Once stable, require a change of > 10 to move back into unstable
             if unstable {
                 if differences == 0 {
                     unstable = false
@@ -121,7 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         sampler = Sampler(viewer.grid)
-        manager = AssetManager(url: NSURL(fileURLWithPath: "/Users/wdillon/Desktop/CM5/CM5/CM5-small.mov"))
+        manager = AssetManager(url: NSURL( string: "http://housedillon.com/other/CM5-small.mov")!)
         viewer.sampler = sampler
         sampler.image = manager?.generateFrame(CMTime(seconds: 0, preferredTimescale: 1))
         viewer.needsDisplay = true
