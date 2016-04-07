@@ -21,6 +21,7 @@ class AssetManager {
     let asset: AVURLAsset
     let imageGenerator: AVAssetImageGenerator
     let duration: Double
+    var frameRate: Float = 30
     let frames: [NSValue]
 
     var generating = false
@@ -28,14 +29,28 @@ class AssetManager {
     init(url: NSURL) {
         asset = AVURLAsset(URL: url)
         imageGenerator = AVAssetImageGenerator(asset: asset)
-        duration = CMTimeGetSeconds(asset.duration)
+        duration  = CMTimeGetSeconds(asset.duration)
+        
+        // The tolerance is how much +/- we're willing to accept from the system
+        let tolerance = CMTime(
+            seconds: 1.0 / Double(frameRate) / 2.0,
+            preferredTimescale: 600
+        )
+        // If we don't do this, it appears that the image generator will only give us
+        // frames once every 1/2 second!?
+        imageGenerator.requestedTimeToleranceAfter  = tolerance
+        imageGenerator.requestedTimeToleranceBefore = tolerance
+        
+        if let rate = asset.tracksWithMediaType(AVMediaTypeVideo).first?.nominalFrameRate {
+            frameRate = rate
+        }
         
         var tempFrames = [NSValue]()
-        var last = CMTime(seconds: 0.0, preferredTimescale: 2992)
+        var last = CMTime(seconds: 0.0, preferredTimescale: 600)
         repeat {
             last = CMTime(
-                seconds: CMTimeGetSeconds(last) + (1 / 29.92),
-                preferredTimescale: 2992
+                seconds: CMTimeGetSeconds(last) + (1.0 / Double(frameRate)),
+                preferredTimescale: 600
             )
             tempFrames.append(NSValue(CMTime: last))
         } while CMTimeGetSeconds(last) < duration
@@ -77,7 +92,9 @@ class AssetManager {
                 self.cancelProcessing()
                 return
             }
-                
+            
+//            print("Difference in requested and actual time: \(CMTimeGetSeconds(requested) - CMTimeGetSeconds(actual))")
+            
             if let image = imageOptional {
                 block(actual, image)
             } else {

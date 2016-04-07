@@ -11,10 +11,10 @@ import Foundation
 public class Grid {
     var divisions = (x: 16, y: 32)
     var _corners = (
-        bl: NSPoint(x:  20.0, y:  20.0),
-        br: NSPoint(x: 440.0, y:  20.0),
-        tr: NSPoint(x: 440.0, y: 600.0),
-        tl: NSPoint(x:  20.0, y: 600.0)
+        bl: NSPoint(x: 119.0, y:  39.0),
+        br: NSPoint(x: 351.0, y:  40.0),
+        tr: NSPoint(x: 353.0, y: 602.0),
+        tl: NSPoint(x: 117.0, y: 601.0)
     )
     
     var corners: (bl: NSPoint, br: NSPoint, tr: NSPoint, tl: NSPoint) {
@@ -44,24 +44,24 @@ public class Grid {
             // Delta1 x and y are the changes in X and Y from the left vertical line
             // Delta2 x and y are the changes from the right vertical line
             let delta1 = (
-                x: corners.tl.x - corners.bl.x,
-                y: corners.tl.y - corners.bl.y
+                x: corners.bl.x - corners.tl.x,
+                y: corners.bl.y - corners.tl.y
             )
             
             let delta2 = (
-                x: corners.tr.x - corners.br.x,
-                y: corners.tr.y - corners.br.y
+                x: corners.br.x - corners.tr.x,
+                y: corners.br.y - corners.tr.y
             )
             
             for y in 0..<divisions.y {
                 // Draw lines from bottom to top, left to right
                 let line = (
                     start: NSPoint(
-                        x: corners.bl.x + CGFloat(y) * delta1.x / CGFloat(divisions.y - 1),
-                        y: corners.bl.y + CGFloat(y) * delta1.y / CGFloat(divisions.y - 1)),
+                        x: corners.tl.x + CGFloat(y) * delta1.x / CGFloat(divisions.y - 1),
+                        y: corners.tl.y + CGFloat(y) * delta1.y / CGFloat(divisions.y - 1)),
                     end: NSPoint(
-                        x: corners.br.x + CGFloat(y) * delta2.x / CGFloat(divisions.y - 1),
-                        y: corners.br.y + CGFloat(y) * delta2.y / CGFloat(divisions.y - 1))
+                        x: corners.tr.x + CGFloat(y) * delta2.x / CGFloat(divisions.y - 1),
+                        y: corners.tr.y + CGFloat(y) * delta2.y / CGFloat(divisions.y - 1))
                 )
                 
                 // Draw little circles at each point
@@ -83,9 +83,16 @@ public class Grid {
         }
     }
     
-    func getRects(size: Double) -> [NSRect] {
+    func getRects(size: CGFloat) -> [NSRect] {
         return points.map({ (point: CGPoint) -> NSRect in
-            return NSRect(origin: point, size: CGSize(width: size, height: size))
+            return NSRect(
+                origin: NSPoint(
+                    x: point.x - size / 2,
+                    y: point.y - size / 2),
+                size: CGSize(
+                    width: size,
+                    height: size)
+            )
         })
     }
 }

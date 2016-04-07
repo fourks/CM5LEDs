@@ -17,16 +17,7 @@ func -(lhs: NSPoint, rhs: NSPoint) -> Double {
 }
 
 public class AlignmentView: NSView {
-    private var _image: CGImage? = nil
-    public  var image: CGImage? {
-        set {
-            _image = newValue
-            self.needsDisplay = true
-        }
-        
-        get { return _image }
-    }
-    
+    public var sampler: Sampler? = nil
     public let grid = Grid()
     
     private enum Point {
@@ -38,13 +29,22 @@ public class AlignmentView: NSView {
     
     private var draggedPoint: Point? = nil
     
-
+    private var animating = false
 }
 
 //MARK: Drawing
 extension AlignmentView {
+    func startAnimating() {
+        animating    = true
+        needsDisplay = true
+    }
+    
+    func stopAnimating() {
+        animating = false
+    }
+    
     func drawImage(dirtyRect: NSRect) {
-        if let img = image {
+        if let img = sampler?.image {
             let nsImage = NSImage(CGImage: img, size: NSSize(width: 480, height: 640))
             nsImage.drawInRect(self.bounds)
         }
@@ -87,39 +87,38 @@ extension AlignmentView {
     
     
     func drawGrid(dirtyRect: NSRect) {
-        drawClickTarget(grid.corners.tl)
-        drawClickTarget(grid.corners.tr)
-        drawClickTarget(grid.corners.bl)
-        drawClickTarget(grid.corners.br)
-        
-        // The rest of the grid will be yellow
         NSColor.yellowColor().setStroke()
         
-        for point in grid.points {
-            // Skip the corners (they're click targets)
-            if point == grid.corners.tl { continue }
-            if point == grid.corners.tr { continue }
-            if point == grid.corners.bl { continue }
-            if point == grid.corners.br { continue }
+        for rect in grid.getRects(10) {
             
-            let circle = NSBezierPath(
-                ovalInRect: NSRect(
-                    x: point.x - 5.0,
-                    y: point.y - 5.0,
-                    width: 10.0,
-                    height: 10.0
-                )
-            )
+            let circle = NSBezierPath(ovalInRect: rect)
             
             circle.lineWidth = 1
             circle.stroke()
         }
+        
+        drawClickTarget(grid.corners.tl)
+        drawClickTarget(grid.corners.tr)
+        drawClickTarget(grid.corners.bl)
+        drawClickTarget(grid.corners.br)
     }
     
     override public func drawRect(dirtyRect: NSRect) {
         super.drawRect(dirtyRect)
-        drawImage(dirtyRect)
+        if let context = NSGraphicsContext.currentContext()?.CGContext,
+           let sampler = self.sampler {
+            CGContextDrawImage(context, CGRectMake(0, 0, 480, 640), sampler.image)
+            CGContextFlush(context)
+        }
+        
+//        drawImage(dirtyRect)
         drawGrid(dirtyRect)
+        
+        if animating {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.needsDisplay = true
+            }
+        }
     }
 }
 
@@ -130,6 +129,12 @@ extension AlignmentView {
         
         let location = self.convertPoint(theEvent.locationInWindow, toView: nil)
         
+        // Get the value of the image under the mouse pointer
+        if let sampler = sampler {
+            let color = sampler.getSample(atPoint: location)
+            Swift.print(color)
+        }
+
         // Check whether any of the grid points are being dragged
         if location - grid.corners.tl <= 5.0 {
             Swift.print("Moving top left corner")
