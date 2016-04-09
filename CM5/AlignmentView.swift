@@ -45,7 +45,13 @@ extension AlignmentView {
     
     func drawImage(dirtyRect: NSRect) {
         if let img = sampler?.image {
-            let nsImage = NSImage(CGImage: img, size: NSSize(width: 480, height: 640))
+            let nsImage = NSImage(
+                CGImage: img,
+                size: NSSize(
+                    width: bounds.width,
+                    height: bounds.height
+                )
+            )
             nsImage.drawInRect(self.bounds)
         }
             
@@ -107,7 +113,10 @@ extension AlignmentView {
         super.drawRect(dirtyRect)
         if let context = NSGraphicsContext.currentContext()?.CGContext,
            let sampler = self.sampler {
-            CGContextDrawImage(context, CGRectMake(0, 0, 480, 640), sampler.image)
+            CGContextDrawImage(
+                context,
+                CGRectMake(0, 0, bounds.width, bounds.height),
+                sampler.image)
             CGContextFlush(context)
         }
         

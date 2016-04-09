@@ -113,17 +113,22 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="640"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <value key="minSize" type="size" width="480" height="640"/>
-            <value key="maxSize" type="size" width="480" height="640"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="640"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ln1-8Q-2D6" customClass="AlignmentView" customModule="CM5" customModuleProvider="target">
+                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ln1-8Q-2D6" customClass="AlignmentView" customModule="CM5" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="1" width="480" height="640"/>
                     </customView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Ln1-8Q-2D6" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="3E1-is-La9"/>
+                    <constraint firstAttribute="bottom" secondItem="Ln1-8Q-2D6" secondAttribute="bottom" id="ILz-Dd-iq1"/>
+                    <constraint firstAttribute="trailing" secondItem="Ln1-8Q-2D6" secondAttribute="trailing" id="ahk-UZ-HYM"/>
+                    <constraint firstItem="Ln1-8Q-2D6" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="cQ6-0v-12n"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="431" y="692"/>
         </window>

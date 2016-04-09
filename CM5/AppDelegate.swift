@@ -16,7 +16,7 @@ func convertTo16BitHex(colors: [NSColor]) -> [UInt16] {
     var accumulator: UInt16 = 0
     for color in colors {
         // The 0.43 number is derived from selecting the point on the histogram
-        accumulator |= (color.greenComponent > 0.43) ? 1 : 0
+        accumulator |= (color.greenComponent > 0.25) ? 1 : 0
 
         if counter == 15 {
             outputArray.append(accumulator)
@@ -99,6 +99,7 @@ func collapseSamples(animation: [[UInt16]]) -> [(Int, Int, [UInt16])] {
     return outputBuffer
 }
 
+// Return the number of rows that are different between frames
 func compareFrames(lhs: [UInt16], rhs: [UInt16]) -> Int {
     guard lhs.count == rhs.count else { return Int.max }
     
@@ -108,6 +109,24 @@ func compareFrames(lhs: [UInt16], rhs: [UInt16]) -> Int {
     }
     
     return differences
+}
+
+// Assume that one rect is wholly contained within the other
+// Return an origin which is the offset of the inner rect within the outer
+// and a size that is the absolute difference in size between the rects.
+func -(rhs: NSRect, lhs: NSRect) -> NSRect {
+    return NSRect(
+        x:      abs(rhs.origin.x    - lhs.origin.x),
+        y:      abs(rhs.origin.y    - lhs.origin.y),
+        width:  abs(rhs.size.width  - lhs.size.width),
+        height: abs(rhs.size.height - lhs.size.height)
+    )
+}
+
+func +(rhs: NSSize, lhs: NSSize) -> NSSize {
+    return NSSize(
+        width:  rhs.width  + lhs.width,
+        height: rhs.height + lhs.height)
 }
 
 @NSApplicationMain
@@ -120,10 +139,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var sampler: Sampler! = nil
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        manager = AssetManager(
+            url: NSURL(fileURLWithPath: "/Users/wdillon/Desktop/Untitled Project.mov")
+        )
+
+//        let windowChrome = viewer.bounds - window.frame
+//        if let width = manager.width, height = manager.height {
+//            viewer.bounds.size = NSSize(width: width, height: height)
+//        }
+
         sampler = Sampler(viewer.grid)
-        manager = AssetManager(url: NSURL( string: "http://housedillon.com/other/CM5-small.mov")!)
         viewer.sampler = sampler
-        sampler.image = manager?.generateFrame(CMTime(seconds: 0, preferredTimescale: 1))
+        
+        // Get a starting image about 1/2 through the video
+        sampler.image = manager?.generateFrame(CMTime(
+            seconds: manager.duration / 2,
+            preferredTimescale: 1
+        ))
+
+        // Find the difference in window dimensions and view dimensions to find
+        // the dimensions of the "chrome" around the view.  We'll get the size
+        // of the video file and add it to the window size.
+//        window.setFrame(
+//            NSRect(
+//                origin: window.frame.origin,
+//                size:   viewer.bounds.size + windowChrome.size
+//            ),
+//            display: true)
+        
         viewer.needsDisplay = true
     }
 
@@ -177,7 +220,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //            print("\(bin)")
 //        }
         for sample in collapseSamples(animation) {
-            print("Frame \(sample.0) was the last from of step \(sample.1)")
+            print("Frame \(sample.0) was the first of step \(sample.1)")
             for row in sample.2 {
                 print(hexString(row))
             }
