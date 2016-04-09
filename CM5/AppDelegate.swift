@@ -174,12 +174,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         viewer.needsDisplay = true
     }
 
-    var histogram = [Float](count: 256, repeatedValue: 0)
+    var histogram = (
+        red:   [Float](count: 256, repeatedValue: 0),
+        green: [Float](count: 256, repeatedValue: 0),
+        blue:  [Float](count: 256, repeatedValue: 0))
     var timeline  = [(CGFloat, CGFloat, CGFloat, CGFloat)]()
     var animation = [[UInt16]]()
     
     @IBAction func run(sender: AnyObject?) {
-        histogram = [Float](count: 265, repeatedValue: 0)
+        histogram.red   = [Float](count: 256, repeatedValue: 0)
+        histogram.green = [Float](count: 256, repeatedValue: 0)
+        histogram.blue  = [Float](count: 256, repeatedValue: 0)
         
         dispatch_async(dispatch_get_main_queue()) {
             self.viewer.startAnimating()
@@ -201,7 +206,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 
                 // Accumulate the value of each sample to build a histogram
                 for sample in samples {
-                    self.histogram[Int(sample.greenComponent * 255) % 255] += 1
+                    self.histogram.red[  Int(sample.redComponent   * 255) % 255] += 1
+                    self.histogram.green[Int(sample.greenComponent * 255) % 255] += 1
+                    self.histogram.blue[ Int(sample.blueComponent  * 255) % 255] += 1
                 }
                 
                 // Create a new animation frame
@@ -220,15 +227,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        for (s0, s1, s2, s3) in timeline {
 //            print("\(s0), \(s1), \(s2), \(s3)")
 //        }
-//        for bin in histogram {
-//            print("\(bin)")
-//        }
-        for sample in collapseSamples(animation) {
-            print("Frame \(sample.0) was the first of step \(sample.1)")
-            for row in sample.2 {
-                print(hexString(row))
-            }
+        
+        guard histogram.red.count == histogram.green.count &&
+              histogram.red.count == histogram.blue.count else {
+            print("Histogram counts do not match")
+            return
         }
+        
+        for i in 0..<histogram.red.count {
+            print("\(histogram.red[i]), \(histogram.green[i]), \(histogram.blue[i])")
+        }
+        
+//        for sample in collapseSamples(animation) {
+//            print("Frame \(sample.0) was the first of step \(sample.1)")
+//            for row in sample.2 {
+//                print(hexString(row))
+//            }
+//        }
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
