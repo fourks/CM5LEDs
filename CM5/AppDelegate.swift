@@ -15,7 +15,8 @@ func convertTo16BitHex(colors: [NSColor]) -> [UInt16] {
     var counter = 0
     var accumulator: UInt16 = 0
     for color in colors {
-        // The 0.43 number is derived from selecting the point on the histogram
+        // For mode 7, 0.43 is the correct number
+        // For mode 5, 0.25 is the correct number.
         accumulator |= (color.greenComponent > 0.25) ? 1 : 0
 
         if counter == 15 {
@@ -138,9 +139,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var manager: AssetManager! = nil
     var sampler: Sampler! = nil
     
+    // Use "http://housedillon.com/other/CM5-small.mov" for mode 7
+    // Use "http://housedillon.com/other/mode5.mov" for mode 5
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         manager = AssetManager(
-            url: NSURL(fileURLWithPath: "/Users/wdillon/Desktop/Untitled Project.mov")
+            url: NSURL( string: "http://housedillon.com/other/mode5.mov")!
         )
 
 //        let windowChrome = viewer.bounds - window.frame
